@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Focusly is a free task and deadline manager for students. Rank assignments by what to do first, see every deadline on a calendar, and get automatic reminders.">
+    <meta property="og:title" content="Focusly - Smart Task &amp; Deadline Manager">
+    <meta property="og:description" content="Organize assignments, prioritize tasks and never miss a deadline.">
+    <meta property="og:type" content="website">
+    <title>Focusly - Smart Task &amp; Deadline Manager</title>
+    <meta name="theme-color" content="#111845">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= Login / Register ================= -->
+<div id="authScreen" class="auth hidden">
+    <section class="auth-hero">
+        <div class="brand-row">
+            <span class="logo"><span data-icon="check"></span></span>
+            <div><b>Focusly</b><small>Smart Task &amp; Deadline Manager</small></div>
+        </div>
+        <h1>Stay organized. <br>Meet your deadlines. <br>Achieve your goals.</h1>
+        <ul>
+            <li><span data-icon="zap"></span> A smart score tells you what to do first</li>
+            <li><span data-icon="calendar"></span> Every deadline on one calendar</li>
+            <li><span data-icon="bell"></span> Reminders before things are due</li>
+        </ul>
+    </section>
+
+    <section class="auth-panel">
+        <div class="auth-card">
+            <h2 id="authHeading">Welcome back</h2>
+            <p class="muted" id="authSub">Log in to see your tasks.</p>
+
+            <div class="seg" role="tablist">
+                <button type="button" id="tabLogin" class="active" role="tab">Log in</button>
+                <button type="button" id="tabRegister" role="tab">Create account</button>
+            </div>
+
+            <form id="authForm" novalidate>
+                <label id="nameRow" class="hidden">Your name
+                    <input type="text" id="aName" maxlength="80" autocomplete="name" placeholder="e.g. Aarav Sharma">
+                </label>
+                <label>Email
+                    <input type="email" id="aEmail" maxlength="160" autocomplete="email" placeholder="you@example.com">
+                </label>
+                <label>Password
+                    <input type="password" id="aPassword" maxlength="100" autocomplete="current-password" placeholder="Your password">
+                </label>
+                <p id="authError" class="form-error hidden" role="alert"></p>
+                <button type="submit" id="authSubmit" class="btn primary wide">Log in</button>
+            </form>
+            <p class="muted small-print">New here? Click <b>Create account</b>. It takes ten seconds, and your tasks stay private to you. <a href="privacy.html" target="_blank" rel="noopener">Privacy policy</a></p>
+        </div>
+    </section>
+</div>
+
+<!-- ================= Main app ================= -->
+<div id="appRoot" class="app hidden">
+
+    <aside id="sidebar" class="sidebar">
+        <div class="brand-row">
+            <span class="logo"><span data-icon="check"></span></span>
+            <div><b>Focusly</b><small>Smart Task &amp; Deadline Manager</small></div>
+        </div>
+
+        <nav class="side-nav" aria-label="Main">
+            <button type="button" class="nav-item" data-action="nav" data-page="dashboard"><span data-icon="home"></span>Dashboard</button>
+            <button type="button" class="nav-item" data-action="nav" data-page="tasks"><span data-icon="check-square"></span>My Tasks</button>
+            <button type="button" class="nav-item" data-action="new"><span data-icon="plus-circle"></span>Add Task</button>
+            <button type="button" class="nav-item" data-action="nav" data-page="calendar"><span data-icon="calendar"></span>Calendar</button>
+            <button type="button" class="nav-item" data-action="nav" data-page="subjects"><span data-icon="book"></span>Subjects</button>
+            <button type="button" class="nav-item" data-action="nav" data-page="settings"><span data-icon="settings"></span>Settings</button>
+        </nav>
+
+        <div class="side-card">
+            <svg viewBox="0 0 120 70" width="96" height="56" aria-hidden="true">
+                <defs>
+                    <linearGradient id="mt1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b9cff"/><stop offset="1" stop-color="#4b55d8"/></linearGradient>
+                    <linearGradient id="mt2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b7c1ff"/><stop offset="1" stop-color="#6a74ea"/></linearGradient>
+                </defs>
+                <path d="M0 70 L38 14 L66 54 L82 34 L120 70 Z" fill="url(#mt1)"/>
+                <path d="M30 70 L72 8 L112 70 Z" fill="url(#mt2)" opacity=".9"/>
+                <path d="M72 8 L84 26 L76 22 L72 28 L66 21 L60 26 Z" fill="#fff" opacity=".9"/>
+                <path d="M72 8 V-2 L82 2 L72 5" fill="#ff6b6b"/>
+            </svg>
+            <p><b>Small steps<br>give big results!</b></p>
+            <small>Stay focused, stay consistent.</small>
+        </div>
+    </aside>
+
+    <div class="main">
+        <header class="topbar">
+            <button type="button" class="icon-btn menu-btn" data-action="open-nav" aria-label="Open menu"><span data-icon="menu"></span></button>
+            <div class="top-brand"><span class="logo"><span data-icon="check"></span></span><div><b>Focusly</b><small id="topHello">Smart Task &amp; Deadline Manager</small></div></div>
+
+            <label class="search">
+                <span data-icon="search"></span>
+                <input type="search" id="searchBox" placeholder="Search tasks, subjects..." aria-label="Search tasks and subjects" maxlength="100" autocomplete="off">
+            </label>
+
+            <div class="top-right">
+                <div class="menu-wrap">
+                    <button type="button" id="bellBtn" class="icon-btn" data-action="toggle-menu" data-menu="bellMenu" aria-label="Reminders">
+                        <span data-icon="bell"></span><i id="bellDot" class="bell-dot hidden"></i>
+                    </button>
+                    <div id="bellMenu" class="dropdown hidden" role="menu"></div>
+                </div>
+
+                <div class="menu-wrap">
+                    <button type="button" id="userBtn" class="user-btn" data-action="toggle-menu" data-menu="userMenu" aria-label="Account menu">
+                        <span id="avatar" class="avatar">?</span>
+                        <span id="userName" class="user-name"></span>
+                        <span data-icon="chevron-down" class="chev"></span>
+                    </button>
+                    <div id="userMenu" class="dropdown hidden" role="menu">
+                        <div class="dd-head"><b id="ddName"></b><small id="ddEmail"></small></div>
+                        <button type="button" class="dd-item" data-action="nav" data-page="settings"><span data-icon="settings"></span>Settings</button>
+                        <button type="button" class="dd-item" data-action="logout"><span data-icon="log-out"></span>Log out</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="loadingBar" class="loading-bar hidden" role="progressbar" aria-label="Loading"></div>
+
+        <main id="view" class="view" aria-live="polite"></main>
+    </div>
+</div>
+<nav id="tabbar" class="tabbar hidden" aria-label="Main">
+    <button type="button" class="tab" data-action="nav" data-page="dashboard"><span data-icon="home"></span><i>Home</i></button>
+    <button type="button" class="tab" data-action="nav" data-page="tasks"><span data-icon="check-square"></span><i>Tasks</i></button>
+    <button type="button" class="tab tab-add" data-action="new" aria-label="Add task"><span data-icon="plus"></span></button>
+    <button type="button" class="tab" data-action="nav" data-page="calendar"><span data-icon="calendar"></span><i>Calendar</i></button>
+    <button type="button" class="tab" data-action="nav" data-page="settings"><span data-icon="settings"></span><i>Settings</i></button>
+</nav>
+<div id="navOverlay" class="nav-overlay" data-action="close-nav"></div>
+
+<!-- ================= Task dialog ================= -->
+<dialog id="taskDialog">
+    <form id="taskForm" method="dialog" novalidate>
+        <h2 id="dialogTitle">New task</h2>
+
+        <label>Title
+            <input type="text" id="fTitle" maxlength="150" required placeholder="e.g. Chemistry lab report">
+        </label>
+
+        <label>Description
+            <textarea id="fDescription" rows="2" maxlength="1000" placeholder="Optional details"></textarea>
+        </label>
+
+        <div class="row">
+            <label>Subject
+                <input type="text" id="fSubject" maxlength="80" list="subjectOptions" placeholder="e.g. Physics">
+                <datalist id="subjectOptions"></datalist>
+            </label>
+            <label>Due date
+                <input type="date" id="fDueDate" required>
+            </label>
+        </div>
+
+        <div class="row">
+            <label>Priority
+                <select id="fPriority">
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM" selected>Medium</option>
+                    <option value="HIGH">High</option>
+                </select>
+            </label>
+            <label>Status
+                <select id="fStatus">
+                    <option value="TODO" selected>To do</option>
+                    <option value="IN_PROGRESS">In progress</option>
+                    <option value="DONE">Done</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="row">
+            <label>Estimated hours
+                <input type="number" id="fHours" min="0.5" max="100" step="0.5" value="1">
+            </label>
+            <label>Remind me (days before)
+                <input type="number" id="fReminder" min="0" max="30" step="1" value="1">
+            </label>
+        </div>
+
+        <p id="formError" class="form-error hidden" role="alert"></p>
+
+        <div class="dialog-actions">
+            <button type="button" id="cancelBtn" class="btn">Cancel</button>
+            <button type="submit" id="saveBtn" class="btn primary">Save task</button>
+        </div>
+    </form>
+</dialog>
+
+<dialog id="deleteDialog">
+    <form id="deleteForm" method="dialog" novalidate>
+        <h2>Delete your account?</h2>
+        <p class="muted">This permanently deletes your account and every task in it. It cannot be undone.</p>
+        <label>Type your password to confirm
+            <input type="password" id="delPassword" autocomplete="current-password" maxlength="100">
+        </label>
+        <p id="delError" class="form-error hidden" role="alert"></p>
+        <div class="dialog-actions">
+            <button type="button" class="btn" data-action="delete-cancel">Cancel</button>
+            <button type="submit" id="delConfirm" class="btn danger solid">Delete everything</button>
+        </div>
+    </form>
+</dialog>
+
+<div id="alarmBanner" class="alarm-banner hidden" role="alert"></div>
+<div id="toast" class="toast hidden" role="status"></div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

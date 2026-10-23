@@ -1,0 +1,12 @@
+# Simplest way to run everything:   docker compose up --build
+# Then open http://localhost:8080   (data is kept in the "taskdata" volume)
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - taskdata:/app/data
+
+volumes:
+  taskdata:

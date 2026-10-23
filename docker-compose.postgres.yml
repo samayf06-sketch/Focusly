@@ -1,0 +1,26 @@
+# App + PostgreSQL:   docker compose -f docker-compose.postgres.yml up --build
+# Needs a ".env" file with DB_USER and DB_PASSWORD (copy .env.example). Nothing secret lives in this file.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: taskmanager
+      POSTGRES_USER: ${DB_USER:?Set DB_USER in .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      DB_URL: jdbc:postgresql://db:5432/taskmanager
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+volumes:
+  pgdata:

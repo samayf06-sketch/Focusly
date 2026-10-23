@@ -1,0 +1,25 @@
+# One-click deploy on Render: New + -> Blueprint -> pick this repo.
+# Creates the website (Docker) and a free PostgreSQL database, and connects them. No secrets in this file.
+services:
+  - type: web
+    name: focusly
+    runtime: docker
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: postgres
+      - key: DB_HOST
+        fromDatabase: { name: focusly-db, property: host }
+      - key: DB_PORT
+        fromDatabase: { name: focusly-db, property: port }
+      - key: DB_NAME
+        fromDatabase: { name: focusly-db, property: database }
+      - key: DB_USER
+        fromDatabase: { name: focusly-db, property: user }
+      - key: DB_PASSWORD
+        fromDatabase: { name: focusly-db, property: password }
+
+databases:
+  - name: focusly-db
+    plan: free
